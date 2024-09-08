@@ -14,11 +14,13 @@ cooldowns = {}
 groupCooldown = {}
 
 function init()
-  connect(g_game, { onGameStart = online,
-                    onSpellGroupCooldown = onSpellGroupCooldown,
-                    onSpellCooldown = onSpellCooldown })
+  connect(g_game, {
+    onGameStart = online,
+    onSpellGroupCooldown = onSpellGroupCooldown,
+    onSpellCooldown = onSpellCooldown
+  })
 
-  cooldownButton = modules.client_topmenu.addRightGameToggleButton('cooldownButton', 
+  cooldownButton = modules.client_topmenu.addRightGameToggleButton('cooldownButton',
     tr('Cooldowns'), '/images/topbuttons/cooldowns', toggle, false, 5)
   cooldownButton:setOn(true)
   cooldownButton:hide()
@@ -31,7 +33,7 @@ function init()
   cooldownPanel = contentsPanel:getChildById('cooldownPanel')
 
   -- preload cooldown images
-  for k,v in pairs(SpelllistSettings) do
+  for k, v in pairs(SpelllistSettings) do
     g_textures.preload(v.iconFile)
   end
 
@@ -41,10 +43,12 @@ function init()
 end
 
 function terminate()
-  disconnect(g_game, { onGameStart = online,
-                       onSpellGroupCooldown = onSpellGroupCooldown,
-                       onSpellCooldown = onSpellCooldown })
-                       
+  disconnect(g_game, {
+    onGameStart = online,
+    onSpellGroupCooldown = onSpellGroupCooldown,
+    onSpellCooldown = onSpellCooldown
+  })
+
   for key, val in pairs(cooldowns) do
     removeCooldown(key)
   end
@@ -147,14 +151,14 @@ function initCooldown(progressRect, updateCallback, finishCallback)
 end
 
 function updateCooldown(progressRect, duration)
-  progressRect:setPercent(progressRect:getPercent() + 10000/duration)
+  progressRect:setPercent(progressRect:getPercent() + 10000 / duration)
 
   if progressRect:getPercent() < 100 then
     removeEvent(progressRect.event)
 
-    progressRect.event = scheduleEvent(function() 
+    progressRect.event = scheduleEvent(function()
       if not progressRect.callback then return end
-      progressRect.callback[ProgressCallback.update]() 
+      progressRect.callback[ProgressCallback.update]()
     end, 100)
   else
     progressRect.callback[ProgressCallback.finish]()

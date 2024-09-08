@@ -55,6 +55,8 @@ public:
     void setFreeCapacity(double freeCapacity);
     void setTotalCapacity(double totalCapacity);
     void setExperience(double experience);
+    void setExperienceBonus(double experienceBonus, int baseXpGain, int voucherAddend, int grindingAddend, int storeBoostAddend, int huntingBoostFactor);
+    void setStoreBoostXpGainTime(int remainingStoreXpBoostSeconds);
     void setLevel(double level, double levelPercent);
     void setMana(double mana, double maxMana);
     void setMagicLevel(double magicLevel, double magicLevelPercent);
@@ -76,6 +78,13 @@ public:
     int getSkillBaseLevel(uint8_t skill) { return skill < m_skillsBaseLevel.size() ? m_skillsBaseLevel[skill] : 0; }
     int getSkillLevelPercent(uint8_t skill) { return skill < m_skillsLevelPercent.size() ? m_skillsLevelPercent[skill] : 0; }
     int getVocation() { return m_vocation; }
+    int getBaseXpGain() { return m_baseXpGain; }
+    int getVoucherXpGain() { return m_voucherAddend; }
+    int getGrindingXpGain() { return m_grindingAddend; }
+    int getStoreBoostXpGain() { return m_storeBoostAddend; }
+    int getHuntingBoostFactor() { return m_huntingBoostFactor; }
+    int getRemainingStoreBoostXpGainTime() { return m_remainingStoreXpBoostSeconds; }
+    double getExperienceBonus() { return m_experienceBonus; }
     double getHealth() { return m_health; }
     double getMaxHealth() { return m_maxHealth; }
     double getFreeCapacity() { return m_freeCapacity; }
@@ -200,6 +209,14 @@ private:
     double m_stamina;
     double m_regenerationTime;
     double m_offlineTrainingTime;
+
+    int m_experienceBonus;
+    int m_baseXpGain;
+    int m_voucherAddend;
+    int m_grindingAddend;
+    int m_storeBoostAddend;
+    int m_huntingBoostFactor;
+    int m_remainingStoreXpBoostSeconds;
 };
 
 #endif

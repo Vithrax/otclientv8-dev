@@ -779,6 +779,13 @@ void Client::registerLuaFunctions()
     g_lua.bindClassMemberFunction<LocalPlayer>("dumpWalkMatrix", &LocalPlayer::dumpWalkMatrix);
     g_lua.bindClassMemberFunction<LocalPlayer>("startServerWalking", &LocalPlayer::startServerWalking);
     g_lua.bindClassMemberFunction<LocalPlayer>("finishServerWalking", &LocalPlayer::finishServerWalking);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getBaseXpGain", &LocalPlayer::getBaseXpGain);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getExperienceBonus", &LocalPlayer::getExperienceBonus);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getVoucherXpGain", &LocalPlayer::getVoucherXpGain);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getGrindingXpGain", &LocalPlayer::getGrindingXpGain);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getStoreBoostXpGain", &LocalPlayer::getStoreBoostXpGain);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getHuntingBoostFactor", &LocalPlayer::getHuntingBoostFactor);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getRemainingStoreBoostXpGainTime", &LocalPlayer::getRemainingStoreBoostXpGainTime);
 
     g_lua.registerClass<Tile>();
     g_lua.bindClassMemberFunction<Tile>("clean", &Tile::clean);

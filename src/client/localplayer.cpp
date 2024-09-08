@@ -45,6 +45,13 @@ LocalPlayer::LocalPlayer()
     m_experience = -1;
     m_level = -1;
     m_levelPercent = -1;
+    m_experienceBonus = -1;
+    m_baseXpGain = -1;
+    m_voucherAddend = -1;
+    m_grindingAddend = -1;
+    m_storeBoostAddend = -1;
+    m_huntingBoostFactor = -1;
+    m_remainingStoreXpBoostSeconds = -1;
     m_mana = -1;
     m_maxMana = -1;
     m_magicLevel = -1;
@@ -523,6 +530,26 @@ void LocalPlayer::setExperience(double experience)
     }
 }
 
+void LocalPlayer::setExperienceBonus(double experienceBonus, int baseXpGain, int voucherAddend, int grindingAddend, int storeBoostAddend, int huntingBoostFactor)
+{
+    if (m_experienceBonus != experienceBonus ||
+        m_baseXpGain != baseXpGain ||
+        m_voucherAddend != voucherAddend ||
+        m_grindingAddend != grindingAddend ||
+        m_storeBoostAddend != storeBoostAddend ||
+        m_huntingBoostFactor != huntingBoostFactor)
+        {
+            m_experienceBonus = experienceBonus;
+            m_baseXpGain = baseXpGain;
+            m_voucherAddend = voucherAddend;
+            m_grindingAddend = grindingAddend;
+            m_storeBoostAddend = storeBoostAddend;
+            m_huntingBoostFactor = huntingBoostFactor;
+
+            callLuaField("onExperienceBonusChange", experienceBonus, baseXpGain, voucherAddend, grindingAddend, storeBoostAddend, huntingBoostFactor);
+        }
+}
+
 void LocalPlayer::setLevel(double level, double levelPercent)
 {
     if(m_level != level || m_levelPercent != levelPercent) {
@@ -640,6 +667,15 @@ void LocalPlayer::setOfflineTrainingTime(double offlineTrainingTime)
         m_offlineTrainingTime = offlineTrainingTime;
 
         callLuaField("onOfflineTrainingChange", offlineTrainingTime, oldOfflineTrainingTime);
+    }
+}
+
+void LocalPlayer::setStoreBoostXpGainTime(int remainingStoreXpBoostSeconds)
+{
+    if(m_remainingStoreXpBoostSeconds != remainingStoreXpBoostSeconds) {
+        m_remainingStoreXpBoostSeconds = remainingStoreXpBoostSeconds;
+
+        callLuaField("onStoreBoostXpGainTime", remainingStoreXpBoostSeconds);
     }
 }
 

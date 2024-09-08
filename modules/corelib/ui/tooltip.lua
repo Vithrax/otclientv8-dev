@@ -53,21 +53,25 @@ end
 
 -- public functions
 function g_tooltip.init()
-  connect(UIWidget, {  onStyleApply = onWidgetStyleApply,
-                       onHoverChange = onWidgetHoverChange})
+  connect(UIWidget, {
+    onStyleApply = onWidgetStyleApply,
+    onHoverChange = onWidgetHoverChange
+  })
 
   addEvent(function()
     toolTipLabel = g_ui.createWidget('UILabel', rootWidget)
     toolTipLabel:setId('toolTip')
     toolTipLabel:setBackgroundColor('#111111cc')
-    toolTipLabel:setTextAlign(AlignCenter)
+    toolTipLabel:setTextAlign(AlignLeft)
     toolTipLabel:hide()
   end)
 end
 
 function g_tooltip.terminate()
-  disconnect(UIWidget, { onStyleApply = onWidgetStyleApply,
-                         onHoverChange = onWidgetHoverChange })
+  disconnect(UIWidget, {
+    onStyleApply = onWidgetStyleApply,
+    onHoverChange = onWidgetHoverChange
+  })
 
   currentHoveredWidget = nil
   toolTipLabel:destroy()
@@ -88,20 +92,19 @@ function g_tooltip.display(text)
   toolTipLabel:enable()
   g_effects.fadeIn(toolTipLabel, 100)
   moveToolTip(true)
-  
+
   connect(rootWidget, {
     onMouseMove = moveToolTip,
-  })  
+  })
 end
 
 function g_tooltip.hide()
   g_effects.fadeOut(toolTipLabel, 100)
-  
+
   disconnect(rootWidget, {
     onMouseMove = moveToolTip,
-  })  
+  })
 end
-
 
 -- @docclass UIWidget @{
 

@@ -64,6 +64,16 @@ MiniWindow
         background-color: red
 
     SkillButton
+      id: xpGain
+      height: 15
+      SkillNameLabel
+        !text: tr('XP Gain')
+      SkillValueLabel
+
+    HorizontalSeparator
+      margin: 5 0 5 0
+      
+    SkillButton
       id: health
       height: 15
       SkillNameLabel

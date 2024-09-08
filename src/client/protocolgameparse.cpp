@@ -1918,17 +1918,23 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg)
 
     double levelPercent = msg->getU8();
 
+    double experienceBonus = 0;
+    int baseXpGain = 0;
+    int voucherAddend = 0;
+    int grindingAddend = 0;
+    int storeBoostAddend = 0;
+    int huntingBoostFactor = 0;
     if (g_game.getFeature(Otc::GameExperienceBonus)) {
         if (g_game.getProtocolVersion() <= 1096) {
-            /*double experienceBonus = */msg->getDouble();
+            experienceBonus = msg->getDouble();
         } else {
-            /*int baseXpGain = */msg->getU16();
+            baseXpGain = msg->getU16();
             if (!g_game.getFeature(Otc::GameTibia12Protocol)) {
-                /*int voucherAddend = */msg->getU16();
+                voucherAddend = msg->getU16();
             }
-            /*int grindingAddend = */msg->getU16();
-            /*int storeBoostAddend = */ msg->getU16();
-            /*int huntingBoostFactor = */ msg->getU16();
+            grindingAddend = msg->getU16();
+            storeBoostAddend = msg->getU16();
+            huntingBoostFactor = msg->getU16();
         }
     }
 
@@ -1982,11 +1988,13 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg)
         regeneration = msg->getU16();
 
     double training = 0;
+    int remainingStoreXpBoostSeconds = 0;
+    bool canBuyMoreStoreXpBoosts = false;
     if (g_game.getFeature(Otc::GameOfflineTrainingTime)) {
         training = msg->getU16();
         if (g_game.getProtocolVersion() >= 1097) {
-            /*int remainingStoreXpBoostSeconds = */msg->getU16();
-            /*bool canBuyMoreStoreXpBoosts = */msg->getU8();
+            remainingStoreXpBoostSeconds = msg->getU16();
+            canBuyMoreStoreXpBoosts = msg->getU8();
         }
     }
 
@@ -1995,6 +2003,7 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg)
     if (!g_game.getFeature(Otc::GameTibia12Protocol))
         m_localPlayer->setTotalCapacity(totalCapacity);
     m_localPlayer->setExperience(experience);
+    m_localPlayer->setExperienceBonus(experienceBonus, baseXpGain, voucherAddend, grindingAddend, storeBoostAddend, huntingBoostFactor);
     m_localPlayer->setLevel(level, levelPercent);
     m_localPlayer->setMana(mana, maxMana);
     if (!g_game.getFeature(Otc::GameTibia12Protocol)) {
@@ -2006,6 +2015,7 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg)
     m_localPlayer->setBaseSpeed(baseSpeed);
     m_localPlayer->setRegenerationTime(regeneration);
     m_localPlayer->setOfflineTrainingTime(training);
+    m_localPlayer->setStoreBoostXpGainTime(remainingStoreXpBoostSeconds);
 }
 
 void ProtocolGame::parsePlayerSkills(const InputMessagePtr& msg)
