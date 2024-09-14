@@ -207,7 +207,6 @@ function onSpellCooldown(iconId, duration)
   end
   local finishFunc = function()
     removeCooldown(progressRect)
-    print('remove')
     cooldown[iconId] = false
   end
   initCooldown(progressRect, updateFunc, finishFunc)
