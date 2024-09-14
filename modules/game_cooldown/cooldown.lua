@@ -1,3 +1,5 @@
+local MOMENTUM_ID = 174
+
 local ProgressCallback = {
   update = 1,
   finish = 2
@@ -153,6 +155,8 @@ end
 function updateCooldown(progressRect, duration)
   progressRect:setPercent(progressRect:getPercent() + 10000 / duration)
 
+  -- print(progressRect:getPercent() + 10000 / duration)
+
   if progressRect:getPercent() < 100 then
     removeEvent(progressRect.event)
 
@@ -174,6 +178,11 @@ function isCooldownIconActive(iconId)
 end
 
 function onSpellCooldown(iconId, duration)
+  if iconId == MOMENTUM_ID then
+    momentumProc(duration)
+    return
+  end
+
   local icon = loadIcon(iconId)
   if not icon then
     return
@@ -184,6 +193,7 @@ function onSpellCooldown(iconId, duration)
   if not progressRect then
     progressRect = g_ui.createWidget('SpellProgressRect', icon)
     progressRect:setId(iconId)
+    progressRect.duration = duration
     progressRect.icon = icon
     progressRect:fill('parent')
   else
@@ -197,6 +207,7 @@ function onSpellCooldown(iconId, duration)
   end
   local finishFunc = function()
     removeCooldown(progressRect)
+    print('remove')
     cooldown[iconId] = false
   end
   initCooldown(progressRect, updateFunc, finishFunc)
@@ -226,5 +237,17 @@ function onSpellGroupCooldown(groupId, duration)
     end
     initCooldown(progressRect, updateFunc, finishFunc)
     groupCooldown[groupId] = true
+  end
+end
+
+-- reduces all cooldowns
+function momentumProc(time)
+  for rect, _ in pairs(cooldowns) do
+    local percent = rect:getPercent()
+    local timeLeft = (rect.duration * (100 - percent)) / 100
+    local newTimeLeft = math.max(timeLeft - time, 0)
+    local newPercent = (rect.duration / (rect.duration - newTimeLeft)) * 100
+
+    rect:setPercent(newPercent)
   end
 end
